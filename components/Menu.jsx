@@ -34,7 +34,11 @@ export default function Menu({ data }) {
     return (
         <div className="menu" role="nav">
             <div className="menu-inner">
-                <input value={inputVal} onChange={handleSearch} />
+                <input
+                    value={inputVal}
+                    onChange={handleSearch}
+                    onClick={() => setInputVal("")}
+                />
                 {searchResults.length !== 0 && (
                     <div className="search-results">
                         {searchResults.map(result => (
