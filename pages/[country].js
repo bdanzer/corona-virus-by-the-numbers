@@ -5,12 +5,20 @@ import slugify from "slugify";
 import _ from "lodash";
 
 import App from "../components/App";
+import Header from "../components/Head";
+import Footer from "../components/Footer";
 
 export default function Country(props) {
     const router = useRouter();
     const { country } = router.query;
 
-    return <App {...props} />;
+    return (
+        <>
+            <Header title={simpleUnSlugify(country)} />
+            <App {...props} />
+            <Footer />
+        </>
+    );
 }
 
 const slugs = countries => {
