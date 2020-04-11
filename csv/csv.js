@@ -2,6 +2,8 @@ const csv2json = require("csvtojson");
 const axios = require("axios");
 const _ = require("lodash");
 
+const slugify = require("slugify");
+
 export const getWorldData = async () => {
     let res = await axios.get(
         "https://covid.ourworldindata.org/data/ecdc/full_data.csv"
@@ -40,18 +42,59 @@ export const getWorldData = async () => {
     return countryCoronaData;
 };
 
+const getSlugged = slug => {
+    return slugify(slug.replace(/\./g, ""), {
+        lower: true
+    });
+};
+
+export const getNewStateData = async () => {
+    let res2 = await axios.get(
+        "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv"
+    );
+    let data2 = await res2.data;
+
+    let csv2 = await csv2json().fromString(data2);
+
+    csv2 = _.sortBy(csv2, "state");
+
+    let stuff = _.chain(csv2)
+        .map((item, i) => {
+            let newCases = i != 0 ? item.cases * 1 - csv2[i - 1].cases * 1 : 0;
+            newCases = Math.sign(newCases) == -1 ? 0 : newCases;
+
+            let newDeaths =
+                i != 0 ? item.deaths * 1 - csv2[i - 1].deaths * 1 : 0;
+            newDeaths = Math.sign(newDeaths) == -1 ? 0 : newDeaths;
+
+            return {
+                ...item,
+                stateSlug: getSlugged(item.state),
+                newCases,
+                newDeaths
+            };
+        })
+
+        .groupBy("stateSlug")
+        .value();
+
+    console.log(stuff);
+
+    return stuff;
+};
+
 export const getStateData = async () => {
     let res2 = await axios.get(
-        "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+        "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
     );
     let data2 = await res2.data;
 
     let csv2 = await csv2json().fromString(data2);
     let group2 = _.groupBy(csv2, data => data["Country/Region"]);
 
-    let amount = 0;
-
     let newThing = [];
+
+    console.log(csv2);
 
     group2.US.map(data => {
         if (data["Province/State"].indexOf(",") !== -1) return;
@@ -94,4 +137,19 @@ export const getStateData = async () => {
     });
 
     return newThing;
+};
+
+export const getCountyData = async () => {
+    // https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv
+    let res = await axios.get(
+        "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"
+    );
+    let data = await res.data;
+
+    let csv = await csv2json().fromString(data);
+
+    let group2 = _.groupBy(csv, data => data["state"]);
+
+    console.log(group2);
+    return group2;
 };

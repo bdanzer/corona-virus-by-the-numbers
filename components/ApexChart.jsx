@@ -5,17 +5,17 @@ const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 import _ from "lodash";
 
 export default function ApexChart({
-    cats,
     series,
     xaxis = {},
     yaxis = {},
-    options = {}
+    options = {},
+    props
 }) {
     let state = {
         options: {
             chart: {
                 id: "basic-bar",
-                height: 500
+                height: "500px"
             },
             xaxis: {
                 ...xaxis
@@ -30,7 +30,12 @@ export default function ApexChart({
 
     return (
         <div className="box">
-            <Chart options={state.options} series={state.series} />
+            <Chart
+                options={state.options}
+                series={state.series}
+                type={state.options.type}
+                {...props}
+            />
         </div>
     );
 }

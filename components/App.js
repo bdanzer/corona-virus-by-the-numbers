@@ -8,19 +8,27 @@ import ApexChart from "./ApexChart";
 import Info from "./Info";
 import References from "./References";
 import Menu from "./Menu";
+import Charts from "./Charts";
 
 function App({ coronaData, selectedCountry, entireData }) {
-    const [limit, setLimit] = useState(5000);
-    const [dailyCases, setDailyCases] = useState([]);
-    const [totalCases, setTotalCases] = useState([]);
-    const [dailyDeaths, setDailyDeaths] = useState([]);
-    const [totalDeaths, setTotalDeaths] = useState([]);
+    const [allCases, setAllCases] = useState([
+        {
+            name: null,
+            data: {
+                dailyCases: [],
+                totalCases: [],
+                totalDeaths: [],
+                dailyDeaths: [],
+                deathPercentage: []
+            }
+        }
+    ]);
     const [globalData, setGlobalData] = useState();
     const [fullData, setFullData] = useState([]);
-    const [dailyDeathRates, setDailyDeathRates] = useState([]);
-    const [totalDeathRates, setTotalDeathRates] = useState([]);
     const [stateData, setStateData] = useState([]);
     const [dailyStateData, setDailyStateData] = useState([]);
+    const [currentSelectedCases, setCurrentSelectedCases] = useState([]);
+    const [chartData, setChartData] = useState([]);
 
     const orderByHighest = data => {
         return _.orderBy(data, ["totalCases"], ["desc"]);
@@ -29,7 +37,6 @@ function App({ coronaData, selectedCountry, entireData }) {
     useEffect(() => {
         (async () => {
             let fullData;
-            let globalData;
 
             if (!coronaData) {
                 fullData = await getWorldData();
@@ -55,107 +62,56 @@ function App({ coronaData, selectedCountry, entireData }) {
     useEffect(() => {
         let filteredData = fullData;
 
-        let dailyCases = filteredData.map(countryData => ({
-            name: countryData.country,
-            // data: countryData.dataSet.map(data => data.total_cases)
-            data: countryData.dataSet.map(data =>
-                data.total_cases ? data.new_cases * 1 : 0
-            )
-        }));
+        if (selectedCountry) {
+            let selectedCases = {
+                name: selectedCountry.country,
+                data: selectedCountry.dataSet.map(data =>
+                    data.total_cases ? data.new_cases * 1 : 0
+                )
+            };
 
-        setDailyCases(dailyCases);
+            console.log("currentSelected", selectedCases);
 
-        let totalCases = filteredData.map(countryData => ({
-            name: countryData.country,
-            data: countryData.dataSet.map(data => data.total_cases * 1)
-        }));
+            setCurrentSelectedCases(selectedCases);
+        }
 
-        setTotalCases(totalCases);
+        let allCases = filteredData.map(countryData => {
+            let template = {
+                dailyCases: [],
+                totalCases: [],
+                totalDeaths: [],
+                dailyDeaths: [],
+                deathPercentage: []
+            };
 
-        let dailyDeaths = filteredData.map(countryData => ({
-            name: countryData.country,
-            data: countryData.dataSet.map(data =>
-                data.new_deaths ? data.new_deaths * 1 : 0
-            )
-        }));
+            countryData.dataSet.map(data => {
+                template.dailyCases.push(
+                    data.new_cases ? data.new_cases * 1 : 0
+                );
+                template.totalCases.push(data.total_cases * 1);
+                template.dailyDeaths.push(
+                    data.new_deaths ? data.new_deaths * 1 : 0
+                );
+                template.totalDeaths.push(data.total_deaths * 1);
+                template.deathPercentage.push(getDeathPercentage(data));
+            });
 
-        setDailyDeaths(dailyDeaths);
-
-        let totalDeaths = filteredData.map(countryData => ({
-            name: countryData.country,
-            data: countryData.dataSet.map(data =>
-                data.new_deaths ? data.total_deaths * 1 : 0
-            )
-        }));
-
-        setTotalDeaths(totalDeaths);
-
-        // let dailyDeathRates = filteredData.map((cases, i) => ({
-        //     name: cases.country,
-        //     data: cases.dataSet.map(data => {
-        //         let newDeath = data.new_deaths * 1;
-        //         let totalCases = data.total_cases * 1;
-
-        //         let rate =
-        //             newDeath != 0 && totalCases != 0
-        //                 ? (newDeath / totalCases) * 100
-        //                 : 0;
-        //         return rate.toFixed(2);
-        //     })
-        // }));
-
-        // setDailyDeathRates(dailyDeathRates);
-
-        let totalDeathRates = filteredData.map((cases, i) => ({
-            name: cases.country,
-            data: cases.dataSet.map(data => {
-                let totalDeaths = data.total_deaths * 1;
-                let totalCases = data.total_cases * 1;
-
-                let rate =
-                    totalDeaths != 0 && totalCases != 0
-                        ? (totalDeaths / totalCases) * 100
-                        : 0;
-                return rate.toFixed(2);
-            })
-        }));
-
-        setTotalDeathRates(totalDeathRates);
-    }, [limit, globalData]);
-
-    useEffect(() => {
-        (async () => {
-            let stateData = await getStateData();
-
-            let orderedStateData = _.orderBy(
-                stateData,
-                ["total_cases"],
-                ["desc"]
-            );
-
-            let filteredData = orderedStateData.filter((data, i) => i < 10);
-
-            filteredData.unshift(selectedCountry);
-
-            // console.log("selectedcountry", selectedCountry);
-
-            let totalStateCases = filteredData.map(countryData => ({
+            return {
                 name: countryData.country,
-                data: countryData.dataSet.map((data, i) => data.total_cases)
-            }));
+                data: template
+            };
+        });
 
-            setStateData(totalStateCases);
+        console.log("ALL", allCases);
+        console.log(
+            allCases.map(cases => ({
+                name: cases.name,
+                data: cases.data.totalCases
+            }))
+        );
 
-            let dailyStateCases = filteredData.map(countryData => ({
-                name: countryData.country,
-                data: countryData.dataSet.map((data, i) => data.new_cases)
-            }));
+        setAllCases(allCases);
 
-            setDailyStateData(dailyStateCases);
-        })();
-    }, [selectedCountry]);
-
-    const Charts = () => {
         let xaxis = {
             type: "numeric",
             tickAmount: 5,
@@ -170,41 +126,44 @@ function App({ coronaData, selectedCountry, entireData }) {
         };
 
         let charts = [
+            // {
+            //     title: `Total Cases for ${
+            //         selectedCountry ? selectedCountry.country : ""
+            //     }`,
+            //     series: [currentSelectedCases],
+            //     xaxis: {
+            //         ...xaxis,
+            //         min: 1
+            //     },
+            //     options
+            // },
             {
-                title: "Total Cases",
-                series: totalCases,
+                title: "Total Cases vs The World",
+                series: getSeries("totalCases"),
                 xaxis,
                 options
             },
             {
-                title: "New Daily Cases",
-                series: dailyCases,
+                title: "New Daily Cases vs The World",
+                series: getSeries("dailyCases"),
                 xaxis,
                 options
             },
             {
                 title: "Total Deaths",
-                series: totalDeaths,
+                series: getSeries("totalDeaths"),
                 xaxis,
                 options
             },
             {
                 title: "New Daily Deaths",
-                series: dailyDeaths,
+                series: getSeries("dailyDeaths"),
                 xaxis,
                 options
             },
-            // {
-            //     title: "Daily Death Rates Percentage",
-            //     series: dailyDeathRates,
-            //     xaxis,
-            //     yaxis: {
-            //         max: 100
-            //     }
-            // },
             {
                 title: "Total Death Rate Percentage",
-                series: totalDeathRates,
+                series: getSeries("deathPercentage"),
                 xaxis: {
                     ...xaxis,
                     min: 1
@@ -216,55 +175,89 @@ function App({ coronaData, selectedCountry, entireData }) {
                     }
                 },
                 options
-            },
-            {
-                title: `${
-                    selectedCountry ? selectedCountry.country : ""
-                } vs Total Cases in US States`,
-                series: stateData,
-                xaxis: {
-                    ...xaxis,
-                    min: 45
-                },
-                options
-            },
-            {
-                title: `${
-                    selectedCountry ? selectedCountry.country : ""
-                } vs Daily Cases in US States`,
-                series: dailyStateData,
-                xaxis: {
-                    ...xaxis,
-                    min: 45
-                },
-                options
             }
+            // {
+            //     title: `${
+            //         selectedCountry ? selectedCountry.country : ""
+            //     } vs Total Cases in US States`,
+            //     series: stateData,
+            //     xaxis: {
+            //         ...xaxis,
+            //         min: 45
+            //     },
+            //     options
+            // },
+            // {
+            //     title: `${
+            //         selectedCountry ? selectedCountry.country : ""
+            //     } vs Daily Cases in US States`,
+            //     series: dailyStateData,
+            //     xaxis: {
+            //         ...xaxis,
+            //         min: 45
+            //     },
+            //     options
+            // }
         ];
 
-        return charts.map((item, i) => (
-            <div>
-                <h2
-                    style={{
-                        color: "white"
-                    }}
-                >
-                    {item.title}
-                </h2>
-                <ApexChart key={i} {...item} />
-            </div>
-        ));
+        setChartData(charts);
+        // setDailyCases(allCases);
+        // setTotalCases(totalCases);
+        // setDailyDeaths(dailyDeaths);
+        // setTotalDeaths(totalDeaths);
+        // setTotalDeathRates(totalDeathRates);
+    }, [fullData, selectedCountry]);
+
+    const getDeathPercentage = data => {
+        let totalDeaths = data.total_deaths * 1;
+        let totalCases = data.total_cases * 1;
+
+        let rate =
+            totalDeaths != 0 && totalCases != 0
+                ? (totalDeaths / totalCases) * 100
+                : 0;
+        return rate.toFixed(2);
+    };
+
+    useEffect(() => {
+        (async () => {
+            // let stateDataFetch = await getStateData();
+            // let orderedStateData = _.orderBy(
+            //     stateDataFetch,
+            //     ["total_cases"],
+            //     ["desc"]
+            // );
+            // let filteredData = orderedStateData.filter((data, i) => i < 10);
+            // if (selectedCountry) {
+            //     filteredData.unshift(selectedCountry);
+            // }
+            // let totalStateCases = filteredData.map(countryData => ({
+            //     name: countryData.country,
+            //     data: countryData.dataSet.map((data, i) => data.total_cases)
+            // }));
+            // console.log("total state", totalStateCases);
+            // setStateData(totalStateCases);
+            // let dailyStateCases = filteredData.map(countryData => ({
+            //     name: countryData.country,
+            //     data: countryData.dataSet.map((data, i) => data.new_cases)
+            // }));
+            // setDailyStateData(dailyStateCases);
+        })();
+    }, [selectedCountry]);
+
+    const getSeries = item => {
+        return allCases.map(cases => ({
+            name: cases.name,
+            data: cases.data[item]
+        }));
     };
 
     return (
         <>
             <Menu data={entireData ? entireData : fullData} />
             <div className="App">
-                <Info
-                    countryData={globalData}
-                    limit={limit}
-                    fullData={fullData}
-                />
-                <Charts />
+                <Info countryData={globalData} fullData={fullData} />
+                <Charts charts={chartData} />
                 <References />
             </div>
         </>

@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 
-export default function Info({ limit, countryData, fullData }) {
+export default function Info({ countryData, fullData }) {
     let lastData = countryData ? _.last(countryData.dataSet).date : "";
 
     return (
