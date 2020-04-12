@@ -41,13 +41,15 @@ export default function Menu() {
                 />
                 {searchResults.length !== 0 && (
                     <div className="search-results">
-                        {searchResults.map((result) => (
+                        {searchResults.map((result, i) => (
                             <li
+                                key={i}
                                 onClick={() =>
                                     handleSearchItemClick(result.path)
                                 }
                             >
-                                {result.name}
+                                {console.log(result)}
+                                {result.fullName}
                             </li>
                         ))}
                     </div>

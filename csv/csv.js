@@ -19,8 +19,10 @@ export const getWorldData = async () => {
             let slug = getSlugged(country);
 
             return {
+                name: country,
                 date: current.date,
                 slug,
+                fullName: country,
                 path: `/${slug}`,
                 location: current.location,
                 totalCases: current.total_cases * 1,
@@ -75,6 +77,7 @@ export const getNewStateData = async () => {
                 date: item.date,
                 name: item.state,
                 slug,
+                fullName: `${item.state}, United States`,
                 path: `/united-states/${slug}`,
                 totalCases: item.cases * 1,
                 newCases,
@@ -105,6 +108,7 @@ const template = (name, data) => {
         name: name,
         slug: getSlugged(name),
         path: lastData.path,
+        fullName: lastData.fullName,
         totalCases,
         totalDeaths,
         totalDeathPercentage: getPercentage(totalDeaths, totalCases),
@@ -120,56 +124,70 @@ const getNewData = (i, data, currentDataObj, part) => {
     return Math.sign(newData) == -1 ? 0 : newData;
 };
 
-export const getCountyData = async (state) => {
+export const getCountyData = async (state = "all") => {
     let res = await axios.get(
         "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"
     );
     let data = await res.data;
     let csv = await csv2json().fromString(data);
 
-    let organize = [];
-    let states = _.groupBy(csv, (stateData) => {
+    const handleGroupBy = (stateData) => {
         let slug = getSlugged(stateData.state.toLowerCase());
 
         if (slug === state) {
             return slug;
         }
-    });
+    };
 
-    let counties = _.groupBy(states[state], "county");
+    let organize = [];
 
-    _.forEach(counties, (data, county) => {
-        data = data.map((item, i) => {
-            let newCases = getNewData(i, data, item, "cases");
-            let newDeaths = getNewData(i, data, item, "deaths");
-
-            let stateSlug = getSlugged(item.state);
-            let countySlug = getSlugged(item.county);
-
-            return {
-                date: item.date,
-                name: item.county,
-                state: item.state,
-                stateSlug,
-                countySlug,
-                path: `/united-states/${stateSlug}/${countySlug}`,
-                totalCases: item.cases * 1,
-                newCases,
-                totalDeaths: item.deaths * 1,
-                newDeaths,
-                totalDeathPercentage: getPercentage(
-                    item.deaths * 1,
-                    item.cases * 1
-                ),
-                fips: item.fips,
-            };
+    if (state === "all") {
+        let states = _.groupBy(csv, "state");
+        _.forEach(states, (data, state) => {
+            let counties = _.groupBy(data, "county");
+            organizeCounties(counties);
         });
+    } else {
+        let states = _.groupBy(csv, handleGroupBy);
+        let counties = _.groupBy(states[state], "county");
+        organizeCounties(counties);
+    }
 
-        organize.push({
-            ...template(county, data),
-            dataSet: data,
+    function organizeCounties(counties) {
+        _.forEach(counties, (data, county) => {
+            data = data.map((item, i) => {
+                let newCases = getNewData(i, data, item, "cases");
+                let newDeaths = getNewData(i, data, item, "deaths");
+
+                let stateSlug = getSlugged(item.state);
+                let countySlug = getSlugged(item.county);
+
+                return {
+                    date: item.date,
+                    name: item.county,
+                    state: item.state,
+                    stateSlug,
+                    countySlug,
+                    path: `/united-states/${stateSlug}/${countySlug}`,
+                    fullName: `${item.county}, ${item.state}, United States`,
+                    totalCases: item.cases * 1,
+                    newCases,
+                    totalDeaths: item.deaths * 1,
+                    newDeaths,
+                    totalDeathPercentage: getPercentage(
+                        item.deaths * 1,
+                        item.cases * 1
+                    ),
+                    fips: item.fips,
+                };
+            });
+
+            organize.push({
+                ...template(county, data),
+                dataSet: data,
+            });
         });
-    });
+    }
 
     return organize;
 };

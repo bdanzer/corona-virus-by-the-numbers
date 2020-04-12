@@ -171,13 +171,12 @@ body {
 
 .menu-inner input {
     -webkit-appearance: none;
-    border: none;
-    border: 1px solid black;
+    border: 2px solid #0000009c;
     padding: 10px 15px;
-    border-radius: 26px;
     font-size: 16px;
     text-align: center;
     width: 225px;
+    border-radius: 6px;
 }
 
 .search-results {
