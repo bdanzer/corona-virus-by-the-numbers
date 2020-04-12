@@ -19,8 +19,11 @@ export default async (req, res) => {
     // let combine = [...county, ...world, ...states];
     // fs.writeFileSync("./cache/found.json", JSON.stringify(combine, null, 4));
 
+    const clean = (string) => string.replace(/\./g, "");
+
     let found = combine.filter(
-        (data) => data.name.toLowerCase().search(search.toLowerCase()) !== -1
+        (data) =>
+            clean(data.name).toLowerCase().search(search.toLowerCase()) !== -1
     );
 
     if (found.length === 0) {
