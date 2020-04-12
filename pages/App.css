@@ -106,10 +106,12 @@ body {
         #29323c,
         #485563
     ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #34495e;
 }
 
 .box {
     background: #a6acaf;
+    background: white;
     padding: 20px;
     margin-bottom: 40px;
     -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
@@ -170,22 +172,31 @@ body {
     -webkit-appearance: none;
     border: none;
     border: 1px solid black;
-    padding: 15px;
+    padding: 10px 15px;
     border-radius: 26px;
     font-size: 16px;
     text-align: center;
-    width: 350px;
+    width: 225px;
 }
 
 .search-results {
     position: absolute;
     top: 60px;
-    background: #43505e;
+    background: white;
     padding: 20px;
-    color: white;
+    color: black;
     width: 350px;
     max-height: 300px;
     overflow: scroll;
+    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+        0 6px 6px rgba(0, 0, 0, 0.23);
+    -moz-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+        0 6px 6px rgba(0, 0, 0, 0.23);
+    -ms-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+        0 6px 6px rgba(0, 0, 0, 0.23);
+    -o-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+        0 6px 6px rgba(0, 0, 0, 0.23);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 .search-results li {
