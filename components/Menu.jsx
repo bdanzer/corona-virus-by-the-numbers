@@ -11,7 +11,7 @@ export default function Menu() {
         setInputVal(e.target.value);
         if (e.target.value.length >= 3) {
             let res = await axios.get(
-                `http://localhost:3000/api/search/${e.target.value}`
+                `${window.location.origin}/api/search/${e.target.value}`
             );
             let dataRes = await res.data;
 
