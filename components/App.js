@@ -72,6 +72,9 @@ function App({ data, placeName, placeType, currentSlug }) {
 
         let options = {
             colors: mixedColors[0],
+            stroke: {
+                width: 2,
+            },
             chart: {
                 // foreColor: "#fff",
             },

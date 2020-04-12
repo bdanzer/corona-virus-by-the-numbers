@@ -3,6 +3,17 @@ import _ from "lodash";
 const fs = require("fs");
 import combine from "../../../cache/found.json";
 
+const cacheAllData = async () => {
+    let county = await getCountyData();
+    let world = await getWorldData();
+    let states = await getNewStateData();
+
+    let combine = [...county, ...world, ...states];
+    fs.writeFileSync("./cache/found.json", JSON.stringify(combine, null, 4));
+
+    return combine;
+};
+
 export default async (req, res) => {
     const { search } = req.query;
 
@@ -12,14 +23,10 @@ export default async (req, res) => {
 
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
-    // let county = await getCountyData();
-    // let world = await getWorldData();
-    // let states = await getNewStateData();
 
-    // let combine = [...county, ...world, ...states];
-    // fs.writeFileSync("./cache/found.json", JSON.stringify(combine, null, 4));
+    // let combine = await cacheAllData();
 
-    const clean = (string) => string.replace(/\./g, "");
+    const clean = (string) => string.replace(/(\.|,)/g, "");
 
     let found = combine.filter(
         (data) =>

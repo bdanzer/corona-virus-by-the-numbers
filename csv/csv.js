@@ -106,6 +106,7 @@ const template = (name, data) => {
 
     return {
         name: name,
+        date: lastData.date,
         slug: getSlugged(name),
         path: lastData.path,
         fullName: lastData.fullName,
