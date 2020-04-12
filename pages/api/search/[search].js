@@ -20,7 +20,7 @@ export default async (req, res) => {
     // fs.writeFileSync("./cache/found.json", JSON.stringify(combine, null, 4));
 
     let found = combine.filter(
-        (data) => data.name.toLowerCase().search(search) !== -1
+        (data) => data.name.toLowerCase().search(search.toLowerCase()) !== -1
     );
 
     if (found.length === 0) {
