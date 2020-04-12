@@ -109,6 +109,7 @@ const template = (name, data) => {
         totalDeaths,
         totalDeathPercentage: getPercentage(totalDeaths, totalCases),
         totalNewCases: lastData.newCases,
+        totalNewDeaths: lastData.newDeaths,
         count: data.length * 1,
         dataSet: data,
     };

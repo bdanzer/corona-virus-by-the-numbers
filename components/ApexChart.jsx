@@ -9,27 +9,27 @@ export default function ApexChart({
     xaxis = {},
     yaxis = {},
     options = {},
-    props
+    props,
 }) {
     let state = {
         options: {
             chart: {
                 id: "basic-bar",
-                height: "500px"
+                height: "500px",
             },
             xaxis: {
-                ...xaxis
+                ...xaxis,
             },
             yaxis: {
-                ...yaxis
+                ...yaxis,
             },
-            ...options
+            ...options,
         },
-        series: series
+        series: series,
     };
 
     return (
-        <div className="box">
+        <div className="box chart-wrap">
             <Chart
                 options={state.options}
                 series={state.series}

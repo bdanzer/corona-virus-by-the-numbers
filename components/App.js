@@ -11,6 +11,7 @@ import Charts from "./Charts";
 function App({ data, placeName, placeType, currentSlug }) {
     // console.log("data", data);
     const [chartData, setChartData] = useState([]);
+    const [filtered, setFiltered] = useState();
 
     const orderByHighest = (data) => {
         return _.orderBy(data, ["totalCases"], ["desc"]);
@@ -46,6 +47,7 @@ function App({ data, placeName, placeType, currentSlug }) {
 
     useEffect(() => {
         const [filtered, thingFiltered] = filterCurrentSlug(data, currentSlug);
+        setFiltered(thingFiltered);
 
         let top10 = top10Highest(filtered);
 
@@ -186,7 +188,7 @@ function App({ data, placeName, placeType, currentSlug }) {
         <>
             <Menu />
             <div className="App">
-                {/* <Info countryData={globalData} fullData={fullData} /> */}
+                {filtered && <Info countryData={filtered} />}
                 <Charts charts={chartData} />
                 <References />
             </div>

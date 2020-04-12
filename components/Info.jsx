@@ -1,56 +1,55 @@
 import React from "react";
 import _ from "lodash";
+import moment from "moment";
 
-export default function Info({ countryData, fullData }) {
-    let lastData = countryData ? _.last(countryData.dataSet).date : "";
+export default function Info({ countryData }) {
+    let lastData = moment(_.last(countryData.dataSet).date).format(
+        "MMMM Do, YYYY"
+    );
+
+    let json = [
+        {
+            title: "Days of Reports",
+            data: countryData.count,
+        },
+        {
+            title: "Total Cases",
+            data: countryData.totalCases,
+        },
+        {
+            title: `New Cases`,
+            data: countryData.totalNewCases,
+        },
+        {
+            title: "Total Deaths",
+            data: countryData.totalDeaths,
+        },
+        {
+            title: "New Deaths",
+            data: countryData.totalNewDeaths,
+        },
+        {
+            title: "Total Death Percentage",
+            data: `${countryData.totalDeathPercentage}%`,
+        },
+    ];
 
     return (
         <>
-            <h1
-                style={{
-                    color: "white"
-                }}
-            >
-                Corona Virus by the Numbers
+            <h1 className="main-title">
+                {`${countryData.name} Corona Data for ${lastData}`}
             </h1>
-            <div className="box">
-                <p>Last Updated: {lastData}</p>
-                <p>Paramaters of data</p>
-                <li>
-                    The data is filtered based on the top 10 most reported cases
-                </li>
-                <li>
-                    All the data aligns with the first day of reporting with at
-                    least 1 case for each country
-                </li>
-                <p>Stats for {countryData ? countryData.country : ""}</p>
-                <ul>
-                    <li>
-                        <span className="highlight">
-                            {countryData ? countryData.dataSet.length : 0}
-                        </span>{" "}
-                        days of reports
-                    </li>
-                    <li>
-                        <span className="highlight">
-                            {countryData ? countryData.totalCases : ""}
-                        </span>
-                        reported cases
-                    </li>
-                    <li>
-                        <span className="highlight">
-                            {countryData
-                                ? _.last(countryData.dataSet).total_deaths
-                                : 0}
-                        </span>
-                        total deaths
-                    </li>
-                </ul>
-                <p>To filter data below click on dots or hover to single out</p>
-                <p>
-                    This data is updated every hour when made available by the
-                    CDC, Johnhopkins, and WHO
-                </p>
+            <div className="box info-box">
+                <div className="new-row">
+                    {json.map((data) => (
+                        <div className="info-wrap col-md-2">
+                            <div className="info-title">{data.title}</div>
+                            <div className="info-data">
+                                <span className="highlight">{data.data}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </>
     );
