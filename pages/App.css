@@ -286,8 +286,9 @@ body {
         padding: 0 10px;
     }
 
-    .main-title {
-        font-size: 25px;
+    .main-title,
+    .info-data .info-title {
+        font-size: 22px;
     }
 
     .col-md-2 {
