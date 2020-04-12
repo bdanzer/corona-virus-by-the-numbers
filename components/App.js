@@ -9,7 +9,6 @@ import Menu from "./Menu";
 import Charts from "./Charts";
 
 function App({ data, placeName, placeType, currentSlug }) {
-    // console.log("data", data);
     const [chartData, setChartData] = useState([]);
     const [filtered, setFiltered] = useState();
 

@@ -6,7 +6,7 @@ import { getCountyData } from "../../../csv/csv";
 
 const County = (props) => (
     <div className="container">
-        <Header />
+        <Header title={props.placeName} />
         <App {...props} />
         <Footer />
     </div>

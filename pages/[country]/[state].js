@@ -6,7 +6,7 @@ import { getNewStateData } from "../../csv/csv";
 
 const State = (props) => (
     <div className="container">
-        <Header />
+        <Header title={props.placeName} />
         <App {...props} />
         <Footer />
     </div>

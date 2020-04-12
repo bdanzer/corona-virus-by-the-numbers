@@ -6,7 +6,7 @@ import { getWorldData } from "../csv/csv";
 
 const Country = (props) => (
     <div className="container">
-        <Header />
+        <Header title={props.placeName} />
         <App {...props} />
         <Footer />
     </div>

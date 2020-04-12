@@ -9,7 +9,7 @@ export default function Info({ countryData }) {
 
     let json = [
         {
-            title: "Days of Reports",
+            title: "Total Reports",
             data: countryData.count,
         },
         {

@@ -6,7 +6,7 @@ import { getWorldData } from "../csv/csv";
 
 const Home = (props) => (
     <div className="container">
-        <Header />
+        <Header title="World" />
         <App {...props} />
         <Footer />
     </div>
