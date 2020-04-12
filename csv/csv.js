@@ -16,8 +16,12 @@ export const getWorldData = async () => {
     _.forEach(groupBy, (data, country) => {
         let changedDataSet = data.map((current) => {
             // console.log("before", current.total_cases, current.total_deaths);
+            let slug = getSlugged(country);
+
             return {
                 date: current.date,
+                slug,
+                path: `/${slug}`,
                 location: current.location,
                 totalCases: current.total_cases * 1,
                 newCases: current.new_cases * 1,
@@ -65,10 +69,13 @@ export const getNewStateData = async () => {
                 i != 0 ? item.deaths * 1 - csv2[i - 1].deaths * 1 : 0;
             newDeaths = Math.sign(newDeaths) == -1 ? 0 : newDeaths;
 
+            let slug = getSlugged(item.state);
+
             return {
                 date: item.date,
                 name: item.state,
-                slug: getSlugged(item.state),
+                slug,
+                path: `/united-states/${slug}`,
                 totalCases: item.cases * 1,
                 newCases,
                 totalDeaths: item.deaths * 1,
@@ -97,6 +104,7 @@ const template = (name, data) => {
     return {
         name: name,
         slug: getSlugged(name),
+        path: lastData.path,
         totalCases,
         totalDeaths,
         totalDeathPercentage: getPercentage(totalDeaths, totalCases),
@@ -111,20 +119,21 @@ const getNewData = (i, data, currentDataObj, part) => {
     return Math.sign(newData) == -1 ? 0 : newData;
 };
 
-export const getCountyData = async () => {
+export const getCountyData = async (state) => {
     let res = await axios.get(
         "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"
     );
     let data = await res.data;
-
     let csv = await csv2json().fromString(data);
 
-    // console.log("number of items: ", csv.length);
-
     let organize = [];
-    let states = _.groupBy(csv, "state");
+    let states = _.groupBy(csv, (stateData) => {
+        let slug = getSlugged(stateData.state.toLowerCase());
 
-    let state = "Missouri";
+        if (slug === state) {
+            return slug;
+        }
+    });
 
     let counties = _.groupBy(states[state], "county");
 
@@ -133,12 +142,16 @@ export const getCountyData = async () => {
             let newCases = getNewData(i, data, item, "cases");
             let newDeaths = getNewData(i, data, item, "deaths");
 
+            let stateSlug = getSlugged(item.state);
+            let countySlug = getSlugged(item.county);
+
             return {
                 date: item.date,
                 name: item.county,
                 state: item.state,
-                stateSlug: getSlugged(item.state),
-                countySlug: getSlugged(item.county),
+                stateSlug,
+                countySlug,
+                path: `/united-states/${stateSlug}/${countySlug}`,
                 totalCases: item.cases * 1,
                 newCases,
                 totalDeaths: item.deaths * 1,

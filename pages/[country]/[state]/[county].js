@@ -1,58 +1,37 @@
-import React, { useEffect } from "react";
-import { useRouter } from "next/router";
-
-import _ from "lodash";
+import App from "../../../components/App";
+import Header from "../../../components/Head";
+import Footer from "../../../components/Footer";
 
 import { getCountyData } from "../../../csv/csv";
 
-import slugify from "slugify";
+const County = (props) => (
+    <div className="container">
+        <Header />
+        <App {...props} />
+        <Footer />
+    </div>
+);
 
-export default function County(props) {
-    const router = useRouter();
-    const { state, county } = router.query;
+export async function getServerSideProps({ params }) {
+    const { country, state, county } = params;
 
-    console.log(state, county);
+    let data = await getCountyData(state);
+    let placeName;
 
-    const getSlugged = slug => {
-        return slugify(slug.replace(/\./g, ""), {
-            lower: true
-        });
+    data.forEach((dataThing) => {
+        if (dataThing.slug === county) {
+            placeName = dataThing.name;
+        }
+    });
+
+    return {
+        props: {
+            data: data,
+            placeName,
+            currentSlug: county,
+            placeType: "counties",
+        },
     };
-
-    useEffect(() => {
-        (async () => {
-            if (!state) {
-                return;
-            }
-
-            let data = await getCountyData();
-
-            let stateData = data[_.capitalize(state)];
-
-            if (stateData) {
-                let counties = _.groupBy(stateData, data => data["county"]);
-
-                for (let city in counties) {
-                    console.log(city);
-
-                    if (county === getSlugged(city)) {
-                        console.log(counties[city]);
-                        break;
-                    }
-                }
-            }
-
-            // _.findKey(data, function(o) {
-            //     console.log("things", o);
-            // });
-        })();
-    }, [state]);
-
-    return (
-        <>
-            {/* <Header title={simpleUnSlugify(country)} /> */}
-            {/* <App {...props} /> */}
-            {/* <Footer /> */}
-        </>
-    );
 }
+
+export default County;

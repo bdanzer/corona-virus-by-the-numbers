@@ -8,11 +8,26 @@ import References from "./References";
 import Menu from "./Menu";
 import Charts from "./Charts";
 
-function App({ data, placeName, placeType }) {
+function App({ data, placeName, placeType, currentSlug }) {
+    // console.log("data", data);
     const [chartData, setChartData] = useState([]);
 
     const orderByHighest = (data) => {
         return _.orderBy(data, ["totalCases"], ["desc"]);
+    };
+
+    const filterCurrentSlug = (data, slug) => {
+        let thingFiltered;
+
+        let filtered = data.filter((dataThing) => {
+            if (dataThing.slug === slug) {
+                thingFiltered = dataThing;
+            }
+
+            return dataThing.slug !== slug;
+        });
+
+        return [filtered, thingFiltered];
     };
 
     const top10Highest = (data) => _.take(orderByHighest(data), 10);
@@ -30,13 +45,20 @@ function App({ data, placeName, placeType }) {
         data.map((countyData) => countyData[key]);
 
     useEffect(() => {
-        let top10 = top10Highest(data);
+        const [filtered, thingFiltered] = filterCurrentSlug(data, currentSlug);
+
+        let top10 = top10Highest(filtered);
+
+        top10.unshift(thingFiltered);
+
+        console.log("top10", top10, thingFiltered);
+
         let totalCases = getData(top10, "totalCases");
         let newCases = getData(top10, "newCases");
         let totalDeaths = getData(top10, "totalDeaths");
         let totalDeathPercentage = getData(top10, "totalDeathPercentage");
 
-        console.log("stuff", totalDeathPercentage, top10);
+        // console.log("stuff", totalDeathPercentage, top10);
 
         let xaxis = {
             type: "numeric",
@@ -53,6 +75,22 @@ function App({ data, placeName, placeType }) {
                 foreColor: "#fff",
             },
         };
+
+        // props: {
+        //     type: "pie",
+        //     height: 350,
+        // },
+
+        // responsive: [
+        //     {
+        //         breakpoint: 1085,
+        //         options: {
+        //             legend: {
+        //                 position: "bottom",
+        //             },
+        //         },
+        //     },
+        // ],
 
         let charts = [
             {
@@ -146,7 +184,7 @@ function App({ data, placeName, placeType }) {
 
     return (
         <>
-            {/* <Menu data={entireData ? entireData : fullData} /> */}
+            <Menu />
             <div className="App">
                 {/* <Info countryData={globalData} fullData={fullData} /> */}
                 <Charts charts={chartData} />

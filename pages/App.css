@@ -6,7 +6,7 @@
     text-align: left;
     max-width: 1200px;
     padding: 20px 40px;
-    margin: 40px auto;
+    margin: 80px auto;
 }
 
 .highlight {
@@ -184,6 +184,8 @@ body {
     padding: 20px;
     color: white;
     width: 350px;
+    max-height: 300px;
+    overflow: scroll;
 }
 
 .search-results li {
