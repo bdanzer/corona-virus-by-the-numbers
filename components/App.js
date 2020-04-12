@@ -52,7 +52,7 @@ function App({ data, placeName, placeType, currentSlug }) {
 
         top10.unshift(thingFiltered);
 
-        console.log("top10", top10, thingFiltered);
+        // console.log("top10", top10, thingFiltered);
 
         let totalCases = getData(top10, "totalCases");
         let newCases = getData(top10, "newCases");
