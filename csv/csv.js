@@ -9,42 +9,40 @@ export const getWorldData = async () => {
         "https://covid.ourworldindata.org/data/ecdc/full_data.csv"
     );
     let data = await res.data;
-
     let csv = await csv2json().fromString(data);
-
-    // let res3 = await axios.get(
-    //     "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-20-2020.csv"
-    // );
-    // let data3 = await res3.data;
-
-    // let csv3 = await csv2json().fromString(data3);
-    // let grouped = _.groupBy(csv3, data => data["Country/Region"]);
-
-    // let num = grouped.US.reduce((prev, current) => {
-    //     return prev + current.Confirmed * 1;
-    // }, 0);
-
-    let groupBy = _.groupBy(csv, data => data.location);
-
+    let groupBy = _.groupBy(csv, (data) => data.location);
     let countryCoronaData = [];
 
     _.forEach(groupBy, (data, country) => {
-        let template = {
-            country: country,
-            dataSet: data,
-            totalCases: _.last(data).total_cases * 1,
-            count: data.length * 1
-        };
+        let changedDataSet = data.map((current) => {
+            // console.log("before", current.total_cases, current.total_deaths);
+            return {
+                date: current.date,
+                location: current.location,
+                totalCases: current.total_cases * 1,
+                newCases: current.new_cases * 1,
+                totalDeaths: current.total_deaths * 1,
+                newDeaths: current.new_deaths * 1,
+                totalDeathPercentage: getPercentage(
+                    current.total_deaths * 1,
+                    current.total_cases * 1
+                ),
+            };
+        });
 
-        countryCoronaData.push(template);
+        let countryData = template(country, changedDataSet);
+        countryCoronaData.push(countryData);
     });
 
     return countryCoronaData;
 };
 
-const getSlugged = slug => {
+const getPercentage = (top, bottom) =>
+    _.round((top / bottom) * 100, 2).toFixed(2) * 1;
+
+const getSlugged = (slug) => {
     return slugify(slug.replace(/\./g, ""), {
-        lower: true
+        lower: true,
     });
 };
 
@@ -53,12 +51,12 @@ export const getNewStateData = async () => {
         "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv"
     );
     let data2 = await res2.data;
-
     let csv2 = await csv2json().fromString(data2);
-
     csv2 = _.sortBy(csv2, "state");
 
-    let stuff = _.chain(csv2)
+    let arr = [];
+
+    _.chain(csv2)
         .map((item, i) => {
             let newCases = i != 0 ? item.cases * 1 - csv2[i - 1].cases * 1 : 0;
             newCases = Math.sign(newCases) == -1 ? 0 : newCases;
@@ -68,79 +66,52 @@ export const getNewStateData = async () => {
             newDeaths = Math.sign(newDeaths) == -1 ? 0 : newDeaths;
 
             return {
-                ...item,
-                stateSlug: getSlugged(item.state),
+                date: item.date,
+                name: item.state,
+                slug: getSlugged(item.state),
+                totalCases: item.cases * 1,
                 newCases,
-                newDeaths
+                totalDeaths: item.deaths * 1,
+                newDeaths,
+                totalDeathPercentage: getPercentage(
+                    item.deaths * 1,
+                    item.cases * 1
+                ),
             };
         })
 
-        .groupBy("stateSlug")
+        .groupBy("name")
+        .forEach((data, state) => {
+            arr.push(template(state, data));
+        })
         .value();
-
-    console.log(stuff);
-
-    return stuff;
+    return arr;
 };
 
-export const getStateData = async () => {
-    let res2 = await axios.get(
-        "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
-    );
-    let data2 = await res2.data;
+const template = (name, data) => {
+    let lastData = _.last(data);
 
-    let csv2 = await csv2json().fromString(data2);
-    let group2 = _.groupBy(csv2, data => data["Country/Region"]);
+    let totalCases = lastData.totalCases ? lastData.totalCases * 1 : 0;
+    let totalDeaths = lastData.totalDeaths ? lastData.totalDeaths * 1 : 0;
 
-    let newThing = [];
+    return {
+        name: name,
+        slug: getSlugged(name),
+        totalCases,
+        totalDeaths,
+        totalDeathPercentage: getPercentage(totalDeaths, totalCases),
+        totalNewCases: lastData.newCases,
+        count: data.length * 1,
+        dataSet: data,
+    };
+};
 
-    console.log(csv2);
-
-    group2.US.map(data => {
-        if (data["Province/State"].indexOf(",") !== -1) return;
-
-        let newObj = {
-            country: data["Province/State"]
-                ? data["Province/State"]
-                : data["Country/Region"],
-            dataSet: [],
-            totalCases: 0
-        };
-
-        let lastCase;
-
-        for (let key in data) {
-            if (
-                key !== "Province/State" &&
-                key !== "Country/Region" &&
-                key !== "Lat" &&
-                key !== "Long"
-            ) {
-                let newCase =
-                    typeof lastCase !== "undefined"
-                        ? Math.abs(data[key] * 1 - lastCase)
-                        : 0;
-                lastCase = data[key] * 1;
-
-                newObj.dataSet.push({
-                    name: key,
-                    total_cases: data[key] * 1,
-                    new_cases: newCase
-                });
-            }
-        }
-
-        newObj.totalCases =
-            newObj.dataSet[newObj.dataSet.length - 1].totalCases;
-
-        newThing.push(newObj);
-    });
-
-    return newThing;
+const getNewData = (i, data, currentDataObj, part) => {
+    let newData = i != 0 ? currentDataObj[part] * 1 - data[i - 1][part] * 1 : 0;
+    return Math.sign(newData) == -1 ? 0 : newData;
 };
 
 export const getCountyData = async () => {
-    // https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv
     let res = await axios.get(
         "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"
     );
@@ -148,8 +119,43 @@ export const getCountyData = async () => {
 
     let csv = await csv2json().fromString(data);
 
-    let group2 = _.groupBy(csv, data => data["state"]);
+    // console.log("number of items: ", csv.length);
 
-    console.log(group2);
-    return group2;
+    let organize = [];
+    let states = _.groupBy(csv, "state");
+
+    let state = "Missouri";
+
+    let counties = _.groupBy(states[state], "county");
+
+    _.forEach(counties, (data, county) => {
+        data = data.map((item, i) => {
+            let newCases = getNewData(i, data, item, "cases");
+            let newDeaths = getNewData(i, data, item, "deaths");
+
+            return {
+                date: item.date,
+                name: item.county,
+                state: item.state,
+                stateSlug: getSlugged(item.state),
+                countySlug: getSlugged(item.county),
+                totalCases: item.cases * 1,
+                newCases,
+                totalDeaths: item.deaths * 1,
+                newDeaths,
+                totalDeathPercentage: getPercentage(
+                    item.deaths * 1,
+                    item.cases * 1
+                ),
+                fips: item.fips,
+            };
+        });
+
+        organize.push({
+            ...template(county, data),
+            dataSet: data,
+        });
+    });
+
+    return organize;
 };

@@ -25,15 +25,15 @@ export default function State({ chartData }) {
     );
 }
 
-const getSlugged = slug => {
+const getSlugged = (slug) => {
     return slug
         ? slugify(slug.replace(/\./g, ""), {
-              lower: true
+              lower: true,
           })
         : "";
 };
 
-const unSlug = slug => {
+const unSlug = (slug) => {
     console.log("slug", slug);
     return slug ? _.capitalize(slug.replace(/-/g, " ")) : "";
 };
@@ -41,7 +41,7 @@ const unSlug = slug => {
 const getThings = (name, selectedData, obj) => {
     return {
         name,
-        data: _.map(selectedData, data => (data[obj] ? data[obj] * 1 : 0))
+        data: _.map(selectedData, (data) => (data[obj] ? data[obj] * 1 : 0)),
     };
 };
 
@@ -55,8 +55,8 @@ export async function getServerSideProps({ params }) {
     });
 
     things = _.chain(things)
-        .orderBy(order => _.last(order.data), ["desc"])
-        .sortBy(item => {
+        .orderBy((order) => _.last(order.data), ["desc"])
+        .sortBy((item) => {
             if (item.name === unSluggedState) {
                 return 0;
             }
@@ -69,8 +69,8 @@ export async function getServerSideProps({ params }) {
     });
 
     things2 = _.chain(things2)
-        .orderBy(order => _.last(order.data), ["desc"])
-        .sortBy(item => {
+        .orderBy((order) => _.last(order.data), ["desc"])
+        .sortBy((item) => {
             if (item.name === unSluggedState) {
                 return 0;
             }
@@ -83,8 +83,8 @@ export async function getServerSideProps({ params }) {
     });
 
     things3 = _.chain(things3)
-        .orderBy(order => _.last(order.data), ["desc"])
-        .sortBy(item => {
+        .orderBy((order) => _.last(order.data), ["desc"])
+        .sortBy((item) => {
             if (item.name === unSluggedState) {
                 return 0;
             }
@@ -96,16 +96,16 @@ export async function getServerSideProps({ params }) {
         type: "numeric",
         tickAmount: 5,
         title: {
-            text: "Days"
+            text: "Days",
         },
-        min: 20
+        min: 20,
     };
 
     let options = {
         colors: mixedColors[0],
         chart: {
-            foreColor: "#fff"
-        }
+            foreColor: "#fff",
+        },
     };
 
     let charts = [
@@ -114,7 +114,7 @@ export async function getServerSideProps({ params }) {
             series: things[0],
             xaxis: {
                 ...xaxis,
-                min: 1
+                min: 1,
             },
             // yaxis: {
             //     labels: {
@@ -124,40 +124,40 @@ export async function getServerSideProps({ params }) {
             options,
             props: {
                 height: 400,
-                width: "100%"
-            }
+                width: "100%",
+            },
         },
         {
             title: `Total Cases ${unSluggedState} vs top 9 states`,
-            series: things[0].map(thing => _.last(thing.data)),
+            series: things[0].map((thing) => _.last(thing.data)),
             options: {
                 ...options,
-                labels: things[0].map(thing => thing.name),
+                labels: things[0].map((thing) => thing.name),
                 stroke: {
-                    show: false
+                    show: false,
                 },
                 responsive: [
                     {
                         breakpoint: 1085,
                         options: {
                             legend: {
-                                position: "bottom"
-                            }
-                        }
-                    }
-                ]
+                                position: "bottom",
+                            },
+                        },
+                    },
+                ],
             },
             props: {
                 type: "pie",
-                height: 350
-            }
+                height: 350,
+            },
         },
         {
             title: `Total New Cases for ${unSluggedState} vs top 9 states`,
             series: things2[0],
             xaxis: {
                 ...xaxis,
-                min: 1
+                min: 1,
             },
             // yaxis: {
             //     labels: {
@@ -167,40 +167,40 @@ export async function getServerSideProps({ params }) {
             options,
             props: {
                 height: 400,
-                width: "100%"
-            }
+                width: "100%",
+            },
         },
         {
             title: `Total New Cases for ${unSluggedState} vs top 9 states`,
-            series: things2[0].map(thing => _.last(thing.data)),
+            series: things2[0].map((thing) => _.last(thing.data)),
             options: {
                 ...options,
-                labels: things[0].map(thing => thing.name),
+                labels: things[0].map((thing) => thing.name),
                 stroke: {
-                    show: false
+                    show: false,
                 },
                 responsive: [
                     {
                         breakpoint: 1085,
                         options: {
                             legend: {
-                                position: "bottom"
-                            }
-                        }
-                    }
-                ]
+                                position: "bottom",
+                            },
+                        },
+                    },
+                ],
             },
             props: {
                 type: "pie",
-                height: 350
-            }
+                height: 350,
+            },
         },
         {
             title: `Total New Deaths for ${unSluggedState} vs top 9 states`,
             series: things3[0],
             xaxis: {
                 ...xaxis,
-                min: 1
+                min: 1,
             },
             // yaxis: {
             //     labels: {
@@ -210,39 +210,39 @@ export async function getServerSideProps({ params }) {
             options,
             props: {
                 height: 400,
-                width: "100%"
-            }
+                width: "100%",
+            },
         },
         {
             title: `Total New Deaths for ${unSluggedState} vs top 9 states`,
-            series: things3[0].map(thing => _.last(thing.data)),
+            series: things3[0].map((thing) => _.last(thing.data)),
             options: {
                 ...options,
-                labels: things3[0].map(thing => thing.name),
+                labels: things3[0].map((thing) => thing.name),
                 stroke: {
-                    show: false
+                    show: false,
                 },
                 responsive: [
                     {
                         breakpoint: 1085,
                         options: {
                             legend: {
-                                position: "bottom"
-                            }
-                        }
-                    }
-                ]
+                                position: "bottom",
+                            },
+                        },
+                    },
+                ],
             },
             props: {
                 type: "pie",
-                height: 350
-            }
-        }
+                height: 350,
+            },
+        },
     ];
 
     return {
         props: {
-            chartData: charts
-        } // will be passed to the page component as props
+            chartData: charts,
+        }, // will be passed to the page component as props
     };
 }
