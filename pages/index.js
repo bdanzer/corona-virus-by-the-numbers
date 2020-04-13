@@ -6,7 +6,7 @@ import { getWorldData } from "../csv/csv";
 
 const Home = (props) => (
     <div className="container">
-        <Header title="World" />
+        <Header title="World" canonical={props.canonical} />
         <App {...props} />
         <Footer />
     </div>
@@ -21,6 +21,7 @@ export async function getServerSideProps({ params }) {
             placeName: "World",
             currentSlug: "world",
             placeType: "countries",
+            canonical: "/",
         },
     };
 }

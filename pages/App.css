@@ -174,10 +174,10 @@ body {
     -webkit-appearance: none;
     border: 2px solid #0000009c;
     padding: 10px 15px;
-    font-size: 16px;
     text-align: center;
     width: 225px;
     border-radius: 6px;
+    font-size: 14px;
 }
 
 .search-results {

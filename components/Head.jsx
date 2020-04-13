@@ -1,7 +1,7 @@
 import Head from "next/head";
 
 function Header(props) {
-    const { title, children } = props;
+    const { title, children, canonical } = props;
 
     return (
         <div className="container">
@@ -24,7 +24,7 @@ function Header(props) {
                     name="robots"
                     content="max-snippet:-1, max-image-preview:large, max-video-preview:-1"
                 />
-                <link rel="canonical" href="/" />
+                <link rel="canonical" href={canonical} />
                 <meta property="og:locale" content="en_US" />
                 <meta property="og:type" content="website" />
                 <meta
