@@ -4,7 +4,7 @@ import Router from "next/router";
 import axios from "axios";
 
 export default function Menu() {
-    const [inputVal, setInputVal] = useState("Search for a Country");
+    const [inputVal, setInputVal] = useState("Search for Country/State/County");
     const [searchResults, setSearchResults] = useState([]);
 
     const handleSearch = async (e) => {
@@ -37,7 +37,10 @@ export default function Menu() {
                 <input
                     value={inputVal}
                     onChange={handleSearch}
-                    onClick={() => setInputVal("")}
+                    onClick={() => {
+                        setInputVal("");
+                        setSearchResults([]);
+                    }}
                 />
                 {searchResults.length !== 0 && (
                     <div className="search-results">

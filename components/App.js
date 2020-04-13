@@ -89,7 +89,7 @@ function App({ data, placeName, placeType, currentSlug }) {
 
         // props: {
         //     type: "pie",
-        //     height: 500,
+        //     height: 400,
         // },
 
         // responsive: [
@@ -123,7 +123,7 @@ function App({ data, placeName, placeType, currentSlug }) {
                 },
                 props: {
                     type: "pie",
-                    height: 500,
+                    height: 400,
                 },
             },
             {
@@ -145,7 +145,7 @@ function App({ data, placeName, placeType, currentSlug }) {
                 },
                 props: {
                     type: "pie",
-                    height: 500,
+                    height: 400,
                 },
             },
             {
@@ -167,7 +167,7 @@ function App({ data, placeName, placeType, currentSlug }) {
                 },
                 props: {
                     type: "pie",
-                    height: 500,
+                    height: 400,
                 },
             },
             {
@@ -189,7 +189,7 @@ function App({ data, placeName, placeType, currentSlug }) {
                 },
                 props: {
                     type: "pie",
-                    height: 500,
+                    height: 400,
                 },
             },
         ];
