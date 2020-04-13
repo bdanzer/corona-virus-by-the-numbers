@@ -80,6 +80,10 @@ function App({ data, placeName, placeType, currentSlug }) {
             },
         };
 
+        let props = {
+            height: 500,
+        };
+
         // props: {
         //     type: "pie",
         //     height: 350,
@@ -102,6 +106,7 @@ function App({ data, placeName, placeType, currentSlug }) {
                 series: totalCases,
                 xaxis,
                 options,
+                props,
             },
             {
                 title: "Total Cases Pie",
@@ -123,6 +128,7 @@ function App({ data, placeName, placeType, currentSlug }) {
                 series: newCases,
                 options,
                 xaxis,
+                props,
             },
             {
                 title: "New Cases Pie",
@@ -144,6 +150,7 @@ function App({ data, placeName, placeType, currentSlug }) {
                 series: totalDeaths,
                 options,
                 xaxis,
+                props,
             },
             {
                 title: "Total Deaths",
@@ -165,6 +172,7 @@ function App({ data, placeName, placeType, currentSlug }) {
                 series: totalDeathPercentage,
                 options,
                 xaxis,
+                props,
             },
             {
                 title: "Total Death Percentage",
