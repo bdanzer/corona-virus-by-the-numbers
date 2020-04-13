@@ -78,6 +78,9 @@ function App({ data, placeName, placeType, currentSlug }) {
             chart: {
                 // foreColor: "#fff",
             },
+            legend: {
+                position: "bottom",
+            },
         };
 
         let props = {
