@@ -32,6 +32,7 @@ export default function Menu() {
     };
 
     const handleSearchItemClick = (slug) => {
+        console.log("click", slug);
         Router.push(`${slug}`);
     };
 
@@ -63,7 +64,6 @@ export default function Menu() {
                                         handleSearchItemClick(result.path)
                                     }
                                 >
-                                    {console.log(result)}
                                     {result.fullName}
                                 </li>
                             ))}
