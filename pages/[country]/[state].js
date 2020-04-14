@@ -25,8 +25,6 @@ const State = (props) => (
 export async function getServerSideProps({ params, res }) {
     const { country, state } = params;
 
-    console.log(params);
-
     let data = await getNewStateData();
     let dataObj;
 
