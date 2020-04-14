@@ -16,6 +16,5 @@ export const getSlugged = (slug) => {
 };
 
 export const unSlug = (slug) => {
-    console.log("slug", slug);
     return slug ? _.capitalize(slug.replace(/-/g, " ")) : "";
 };
