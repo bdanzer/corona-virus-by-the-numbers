@@ -43,7 +43,8 @@ const Home = (props) => (
                 <p>
                     I am a Front-End / Full-Stack developer so it's fair to say
                     that I am not a data scientist so if you know of a way to
-                    make the data look even better then please reach out to me.
+                    make the data look even better then please reach out to me
+                    on <a href="https://twitter.com/covidnumbers">twitter</a>.
                 </p>
                 <p>
                     Also, as if it wasn't made clear enough by the media and by
