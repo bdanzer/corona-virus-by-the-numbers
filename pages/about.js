@@ -84,7 +84,6 @@ export async function getStaticProps({ params }) {
             placeName: "About",
             canonical: "/about",
             title: "About Coronavirus By The Numbers",
-            dataForPage: {},
         },
     };
 }
