@@ -15,6 +15,8 @@ const Home = (props) => (
 export async function getServerSideProps({ params }) {
     let data = await getWorldData();
 
+    let thing = data.reverse().find((worldData) => worldData.name === "World");
+
     return {
         props: {
             data,
@@ -22,6 +24,7 @@ export async function getServerSideProps({ params }) {
             currentSlug: "world",
             placeType: "countries",
             canonical: "/",
+            dataForPage: thing,
         },
     };
 }

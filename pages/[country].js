@@ -33,6 +33,7 @@ export async function getServerSideProps({ params }) {
             currentSlug: country,
             placeType: "countries",
             canonical: dataObj.path,
+            dataForPage: dataObj,
         },
     };
 }

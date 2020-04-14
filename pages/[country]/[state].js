@@ -58,6 +58,7 @@ export async function getServerSideProps({ params, res }) {
             currentSlug: state,
             placeType: "states",
             canonical: dataObj.path,
+            dataForPage: dataObj,
         },
     };
 }

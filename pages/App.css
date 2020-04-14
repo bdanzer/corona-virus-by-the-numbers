@@ -163,8 +163,6 @@ body {
 }
 
 .menu-inner {
-    max-width: 1200px;
-    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -176,8 +174,15 @@ body {
     padding: 10px 15px;
     text-align: center;
     width: 225px;
+    width: 400px;
     border-radius: 6px;
     font-size: 14px;
+}
+
+@media screen and (max-width: 767px) {
+    .menu-inner {
+        width: 225px;
+    }
 }
 
 .search-results {
@@ -259,6 +264,18 @@ body {
     text-align: center;
 }
 
+.info-wrap .info-title {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
 .info-data .highlight {
     padding: 0.2em 0.4em;
     margin: 0;
@@ -300,4 +317,84 @@ body {
     .info-data .highlight {
         font-size: 25px;
     }
+}
+
+.menu-wrap {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    max-height: 40px;
+}
+
+.content-stuff {
+    position: fixed;
+    top: 60px;
+    height: calc(100% - 60px);
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9098039215686274);
+    opacity: 0;
+    left: -100vw;
+}
+
+.content-stuff.open {
+    transition: 0.3s opacity ease;
+    opacity: 1;
+    left: 0;
+}
+
+.ham-wrapped-content li {
+    transform: translateY(-15px);
+    transition: 0.65s transform ease;
+    margin-bottom: 30px;
+    font-size: 20px;
+}
+
+.open .ham-wrapped-content li {
+    transform: translateY(0);
+}
+
+.ham-wrapped-content {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    list-style: none;
+    flex: 0 0 100%;
+    align-items: center;
+    padding-top: 40px;
+}
+
+.ham-wrapped-content a {
+    text-decoration: none;
+    color: white;
+}
+
+.about-wrap {
+    padding: 60px 15px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.about-title {
+    color: white;
+}
+
+.post-info h1 {
+    margin-bottom: 5px;
+}
+
+.post-info span {
+    font-style: italic;
+    margin-bottom: 20px;
+    display: block;
+    color: white;
+}
+
+.icons-wrap {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }

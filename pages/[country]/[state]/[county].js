@@ -31,6 +31,7 @@ export async function getServerSideProps({ params }) {
             currentSlug: county,
             placeType: "counties",
             canonical: dataObj.path,
+            dataForPage: dataObj,
         },
     };
 }
