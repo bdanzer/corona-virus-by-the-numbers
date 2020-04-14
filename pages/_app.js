@@ -66,7 +66,7 @@ export default function MyApp({ Component, pageProps }) {
     return (
         <>
             <Component {...pageProps} />
-            {pageProps.placeName !== "About" && (
+            {pageProps.placeName !== "About" && pageProps.placeName !== "404" && (
                 <div className="icons-wrap">
                     {console.log("page Props", pageProps)}
                     <EmailShareButton
