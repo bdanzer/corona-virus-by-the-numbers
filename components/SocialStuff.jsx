@@ -50,6 +50,7 @@ export default function SocialStuff(props) {
     const numberWithCommas = (x) => commaNumber(x);
 
     date = moment(date).format("MMMM Do, YYYY");
+    let noSpaceName = name.replace(/( |\.)/g, "");
 
     let subject = `See the corona virus numbers for, ${name}`;
     let description = `As of ${date}, ${fullName}, has ${numberWithCommas(
@@ -61,7 +62,7 @@ export default function SocialStuff(props) {
     )}%, ${numberWithCommas(totalNewCases)} total new cases, ${numberWithCommas(
         totalNewDeaths
     )} total new deaths.`;
-    let hashtags = [`coronavirusbythenumbers`, `${name}`, `covid19`];
+    let hashtags = [`coronavirusbythenumbers`, `${noSpaceName}`, `covid19`];
     let size = 46;
 
     return (
