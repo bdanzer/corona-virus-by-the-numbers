@@ -36,7 +36,7 @@ function Header(props) {
             />
             <meta
                 property="og:description"
-                content={`Compare ${title} corona virus numbers with other countries around the World.`}
+                content={`${title} coronavirus numbers (Covid-19). Coronavirus by the numbers has global, state and county data from around the World.`}
             />
             {children}
         </Head>
