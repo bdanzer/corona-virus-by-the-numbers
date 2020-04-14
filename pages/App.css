@@ -383,6 +383,10 @@ body {
     margin: auto;
 }
 
+.about-wrap .box * {
+    width: 100%;
+}
+
 .about-title {
     color: white;
 }
