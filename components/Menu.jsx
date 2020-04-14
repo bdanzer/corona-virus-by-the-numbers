@@ -88,6 +88,16 @@ export default function Menu() {
                                 <a>About</a>
                             </Link>
                         </li>
+                        <li>
+                            <Link href="https://www.globalgiving.org/projects/coronavirus-relief-fund/">
+                                <a target="_blank">Support Covid Victims</a>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="https://www.patreon.com/coronavirusbythenumbers">
+                                <a target="_blank">Help Support Server Costs</a>
+                            </Link>
+                        </li>
                     </div>
                 </div>
             </div>
