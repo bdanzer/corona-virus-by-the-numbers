@@ -166,6 +166,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 .menu-inner input {
@@ -175,6 +176,7 @@ body {
     text-align: center;
     width: 225px;
     width: 400px;
+    max-width: 400px;
     border-radius: 6px;
     font-size: 14px;
 }
@@ -182,6 +184,7 @@ body {
 @media screen and (max-width: 767px) {
     .menu-inner {
         width: 225px;
+        max-width: 400px;
     }
 }
 
@@ -324,6 +327,8 @@ body {
     justify-content: space-around;
     align-items: center;
     width: 100%;
+    max-width: 1200px;
+    margin: auto;
 }
 
 .logo {
@@ -396,5 +401,9 @@ body {
 .icons-wrap {
     position: fixed;
     width: 100%;
-    bottom: 0;
+    bottom: 10px;
+    left: 10px;
+
+    display: flex;
+    justify-content: center;
 }
