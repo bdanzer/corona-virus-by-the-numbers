@@ -1,4 +1,13 @@
 import "./App.css";
+import dynamic from "next/dynamic";
+
+dynamic(
+    () => {
+        import("eligrey-classlist-js-polyfill");
+        import("promise-polyfill");
+    },
+    { ssr: false }
+);
 
 import SocialStuff from "../components/SocialStuff";
 
