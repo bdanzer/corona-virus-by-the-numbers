@@ -44,7 +44,7 @@ function App({ data, placeName, placeType, currentSlug }) {
     const pieChartLabels = (data, key) =>
         data.map((countyData) => countyData[key]);
 
-    useEffect(() => {
+    const start = () => {
         const [filtered, thingFiltered] = filterCurrentSlug(data, currentSlug);
         setFiltered(thingFiltered);
 
@@ -195,6 +195,10 @@ function App({ data, placeName, placeType, currentSlug }) {
         ];
 
         setChartData(charts);
+    };
+
+    useEffect(() => {
+        start();
     }, [data]);
 
     return (
