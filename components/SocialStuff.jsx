@@ -61,7 +61,7 @@ export default function SocialStuff(props) {
     )}%, ${numberWithCommas(totalNewCases)} total new cases, ${numberWithCommas(
         totalNewDeaths
     )} total new deaths.`;
-    let hashtags = [`coronavirusbythenumbers`, `${name}`, `coronaData${name}`];
+    let hashtags = [`coronavirusbythenumbers`, `${name}`, `covid19`];
     let size = 46;
 
     return (

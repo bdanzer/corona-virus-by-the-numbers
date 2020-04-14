@@ -44,7 +44,7 @@ function App({ data, placeName, placeType, currentSlug }) {
     const pieChartLabels = (data, key) =>
         data.map((countyData) => countyData[key]);
 
-    const start = () => {
+    const start = async () => {
         const [filtered, thingFiltered] = filterCurrentSlug(data, currentSlug);
         setFiltered(thingFiltered);
 
