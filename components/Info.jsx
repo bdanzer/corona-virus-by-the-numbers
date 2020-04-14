@@ -1,6 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import moment from "moment";
+import commaNumbers from "comma-number";
 
 export default function Info({ countryData }) {
     let lastData = moment(_.last(countryData.dataSet).date).format(
@@ -10,23 +11,23 @@ export default function Info({ countryData }) {
     let json = [
         {
             title: "Total Reports",
-            data: countryData.count,
+            data: commaNumbers(countryData.count),
         },
         {
             title: "Total Cases",
-            data: countryData.totalCases,
+            data: commaNumbers(countryData.totalCases),
         },
         {
             title: `New Cases`,
-            data: countryData.totalNewCases,
+            data: commaNumbers(countryData.totalNewCases),
         },
         {
             title: "Total Deaths",
-            data: countryData.totalDeaths,
+            data: commaNumbers(countryData.totalDeaths),
         },
         {
             title: "New Deaths",
-            data: countryData.totalNewDeaths,
+            data: commaNumbers(countryData.totalNewDeaths),
         },
         {
             title: "Total Death Percentage",
