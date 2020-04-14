@@ -52,7 +52,7 @@ export async function getServerSideProps({ params, res }) {
     return {
         props: {
             data: data,
-            placeName: dataObj.name,
+            placeName: dataObj.fullName,
             currentSlug: state,
             placeType: "states",
             canonical: dataObj.path,

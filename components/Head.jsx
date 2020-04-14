@@ -17,7 +17,7 @@ function Header(props) {
             />
             <meta
                 name="description"
-                content={`Compare ${title} corona virus numbers with other countries around the World.`}
+                content={`Compare ${title} coronavirus (Covid-19) numbers with other countries around the World.`}
             />
             <meta
                 name="robots"
