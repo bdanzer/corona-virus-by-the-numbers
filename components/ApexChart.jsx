@@ -1,5 +1,14 @@
 import React from "react";
 import dynamic from "next/dynamic";
+
+dynamic(
+    () => {
+        import("eligrey-classlist-js-polyfill");
+        import("promise-polyfill");
+    },
+    { ssr: false }
+);
+
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 import _ from "lodash";

@@ -62,45 +62,46 @@ export default function SocialStuff(props) {
         totalNewDeaths
     )} total new deaths.`;
     let hashtags = [`coronavirusbythenumbers`, `${name}`, `coronaData${name}`];
+    let size = 46;
 
     return (
         <>
             {pageProps.dataForPage && (
                 <div className="icons-wrap">
                     {/* {console.log("page Props", pageProps)} */}
-                    <EmailShareButton
-                        url={url}
-                        subject={subject}
-                        body={description}
-                    >
-                        <EmailIcon />
-                    </EmailShareButton>
-                    <FacebookShareButton
-                        openShareDialogOnClick={true}
-                        url={url}
-                        quote={description}
-                        hashtag={hashtags[0]}
-                    >
-                        <FacebookIcon />
-                    </FacebookShareButton>
                     <TwitterShareButton
                         url={url}
                         title={description}
                         hashtags={hashtags}
                         related={["covidnumbers"]}
                     >
-                        <TwitterIcon />
+                        <TwitterIcon size={size} />
                     </TwitterShareButton>
+                    <FacebookShareButton
+                        openShareDialogOnClick={true}
+                        url={url}
+                        quote={description}
+                        hashtag={hashtags[0]}
+                    >
+                        <FacebookIcon size={size} />
+                    </FacebookShareButton>
+                    <EmailShareButton
+                        url={url}
+                        subject={subject}
+                        body={description}
+                    >
+                        <EmailIcon size={size} />
+                    </EmailShareButton>
                     <LinkedinShareButton
                         title={subject}
                         source={url}
                         summary={description}
                         url={url}
                     >
-                        <LinkedinIcon />
+                        <LinkedinIcon size={size} />
                     </LinkedinShareButton>
                     <RedditShareButton url={url} title={subject}>
-                        <RedditIcon />
+                        <RedditIcon size={size} />
                     </RedditShareButton>
                 </div>
             )}
