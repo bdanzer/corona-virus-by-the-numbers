@@ -93,11 +93,11 @@ export default function Menu() {
                                 <a target="_blank">Support Covid Victims</a>
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link href="https://www.patreon.com/coronavirusbythenumbers">
                                 <a target="_blank">Help Support Server Costs</a>
                             </Link>
-                        </li>
+                        </li> */}
                     </div>
                 </div>
             </div>
