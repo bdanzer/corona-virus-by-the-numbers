@@ -13,7 +13,7 @@ export default function Charts({ charts }) {
                         <div className="col-2" key={i}>
                             <h2
                                 style={{
-                                    color: "white"
+                                    color: "white",
                                 }}
                             >
                                 {props.title}

@@ -8,7 +8,7 @@ import References from "./References";
 import Menu from "./Menu";
 import Charts from "./Charts";
 
-function App({ data, placeName, placeType, currentSlug }) {
+function App({ data, placeName, placeType, currentSlug, dataForPage }) {
     const [chartData, setChartData] = useState([]);
     const [filtered, setFiltered] = useState();
 
@@ -17,17 +17,11 @@ function App({ data, placeName, placeType, currentSlug }) {
     };
 
     const filterCurrentSlug = (data, slug) => {
-        let thingFiltered;
-
         let filtered = data.filter((dataThing) => {
-            if (dataThing.slug === slug) {
-                thingFiltered = dataThing;
-            }
-
-            return dataThing.slug !== slug;
+            return dataThing.slug !== slug || dataThing.slug !== "Unknown";
         });
 
-        return [filtered, thingFiltered];
+        return [filtered, dataForPage];
     };
 
     const top10Highest = (data) => _.take(orderByHighest(data), 10);
@@ -40,7 +34,14 @@ function App({ data, placeName, placeType, currentSlug }) {
             ),
         }));
 
-    const pieChart = (data, key) => data.map((countyData) => countyData[key]);
+    const pieChart = (data, key) => {
+        return [
+            {
+                name: data.name,
+                data: data.map((countyData) => countyData[key]),
+            },
+        ];
+    };
     const pieChartLabels = (data, key) =>
         data.map((countyData) => countyData[key]);
 
@@ -122,7 +123,7 @@ function App({ data, placeName, placeType, currentSlug }) {
                     },
                 },
                 props: {
-                    type: "pie",
+                    type: "bar",
                     height: 400,
                 },
             },
@@ -175,6 +176,9 @@ function App({ data, placeName, placeType, currentSlug }) {
                 series: totalDeathPercentage,
                 options,
                 xaxis,
+                yaxis: {
+                    max: 20,
+                },
                 props,
             },
             {
@@ -201,6 +205,8 @@ function App({ data, placeName, placeType, currentSlug }) {
         start();
     }, [data]);
 
+    let chunk = _.chunk(orderByHighest(data), 10);
+
     return (
         <>
             <Menu />
@@ -208,6 +214,15 @@ function App({ data, placeName, placeType, currentSlug }) {
                 {filtered && <Info countryData={filtered} />}
                 <Charts charts={chartData} />
                 <References />
+                <div class="box">
+                    <h2>Related Data</h2>
+
+                    {chunk[0].map((filter) => (
+                        <a class="related-data" href={filter.path}>
+                            {filter.fullName}
+                        </a>
+                    ))}
+                </div>
             </div>
         </>
     );
