@@ -69,12 +69,12 @@ export default function Menu() {
                         </div>
                     )}
                 </div>
-                <HamburgerMenu
+                {/* <HamburgerMenu
                     height={30}
                     strokeWidth={2}
                     isOpen={menuOpen}
                     menuClicked={handleClick}
-                />
+                /> */}
                 <div className={`content-stuff ${menuOpen ? "open" : ""}`}>
                     <div className="ham-wrapped-content">
                         <li>
