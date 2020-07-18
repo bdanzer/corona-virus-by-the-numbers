@@ -31,12 +31,17 @@ export default function ApexChart({
 
     return (
         <div className="box chart-wrap">
-            <Chart
-                options={state.options}
-                series={state.series}
-                type={state.options.type}
-                {...props}
-            />
+            <div>
+                <Chart
+                    options={state.options}
+                    series={state.series}
+                    type={state.options.type}
+                    {...props}
+                />
+                <div className="foot-note">
+                    <p>*Click on dots to filter countries</p>
+                </div>
+            </div>
         </div>
     );
 }

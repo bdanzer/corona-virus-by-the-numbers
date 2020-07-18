@@ -38,7 +38,6 @@ async function processLineByLine() {
         }
     }
 
-    console.log(colorsObj);
     writeFileSync("./colors.json", JSON.stringify(colorsObj, null, 4), {
         encoding: "utf-8"
     });
@@ -51,7 +50,6 @@ async function processLineByLine() {
         });
     }
 
-    console.log(rainbow);
     writeFileSync("./mixed-colors.json", JSON.stringify(rainbow, null, 4), {
         encoding: "utf-8"
     });

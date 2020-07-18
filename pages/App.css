@@ -411,3 +411,10 @@ body {
     display: flex;
     justify-content: center;
 }
+
+.foot-note p {
+    margin: 0;
+    font-style: italic;
+    font-size: 12px;
+    text-align: center;
+}

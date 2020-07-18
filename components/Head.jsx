@@ -10,7 +10,7 @@ function Header(props) {
                     ? `${title} Corona Virus Data`
                     : "Global Corona Virus Data"}
             </title>
-            <link rel="icon" href="/favicon.ico" />
+            <link rel="icon" type="image/svg+xml" href="/coronavirus.svg" />
             <link
                 href="https://fonts.googleapis.com/css?family=Lato|Montserrat&display=swap"
                 rel="stylesheet"
