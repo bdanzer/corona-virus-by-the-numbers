@@ -26,7 +26,7 @@ export async function getStaticProps({ params }) {
             canonical: "/",
             dataForPage: thing,
         },
-        unstable_revalidate: 1,
+        revalidate: 1,
     };
 }
 
