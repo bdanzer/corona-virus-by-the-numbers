@@ -35,12 +35,8 @@ function App({ data, placeName, placeType, currentSlug, dataForPage }) {
         }));
 
     const pieChart = (data, key) => {
-        return [
-            {
-                name: data.name,
-                data: data.map((countyData) => countyData[key]),
-            },
-        ];
+        console.log(data);
+        return data.map((countyData) => countyData[key]);
     };
     const pieChartLabels = (data, key) =>
         data.map((countyData) => countyData[key]);
@@ -53,7 +49,7 @@ function App({ data, placeName, placeType, currentSlug, dataForPage }) {
 
         top10.unshift(thingFiltered);
 
-        // console.log("top10", top10);
+        console.log("top10", top10);
 
         let totalCases = getData(top10, "totalCases");
         let newCases = getData(top10, "newCases");
@@ -103,6 +99,7 @@ function App({ data, placeName, placeType, currentSlug, dataForPage }) {
         //         },
         //     },
         // ],
+        console.log("top10", pieChart(top10, "totalDeathPercentage"));
 
         let charts = [
             {
@@ -123,7 +120,7 @@ function App({ data, placeName, placeType, currentSlug, dataForPage }) {
                     },
                 },
                 props: {
-                    type: "bar",
+                    type: "pie",
                     height: 400,
                 },
             },
