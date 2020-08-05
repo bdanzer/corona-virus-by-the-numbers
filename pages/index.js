@@ -12,7 +12,7 @@ const Home = (props) => (
     </div>
 );
 
-export async function getServerSideProps({ params }) {
+export async function getStaticProps({ params }) {
     let data = await getWorldData();
 
     let thing = data.reverse().find((worldData) => worldData.name === "World");
