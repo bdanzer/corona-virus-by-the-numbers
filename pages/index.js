@@ -25,8 +25,9 @@ export async function getStaticProps({ params }) {
             placeType: "countries",
             canonical: "/",
             dataForPage: thing,
+            date: new Date(),
         },
-        revalidate: 1,
+        revalidate: 120,
     };
 }
 

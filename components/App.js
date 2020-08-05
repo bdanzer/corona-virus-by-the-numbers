@@ -8,9 +8,11 @@ import References from "./References";
 import Menu from "./Menu";
 import Charts from "./Charts";
 
-function App({ data, placeName, placeType, currentSlug, dataForPage }) {
+function App({ data, placeName, placeType, currentSlug, dataForPage, date }) {
     const [chartData, setChartData] = useState([]);
     const [filtered, setFiltered] = useState();
+
+    console.log(date, "testing");
 
     const orderByHighest = (data) => {
         return _.orderBy(data, ["totalCases"], ["desc"]);
