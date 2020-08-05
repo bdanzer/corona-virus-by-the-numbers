@@ -27,7 +27,7 @@ export async function getStaticProps({ params }) {
             dataForPage: thing,
             date: new Date().toString(),
         },
-        revalidate: 120,
+        revalidate: 1,
     };
 }
 
