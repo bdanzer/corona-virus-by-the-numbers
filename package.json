@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "apexcharts": "^3.17.0",
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "comma-number": "^2.0.1",
         "csvtojson": "^2.0.10",
         "eligrey-classlist-js-polyfill": "^1.2.20180112",
